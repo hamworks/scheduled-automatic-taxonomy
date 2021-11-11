@@ -1,0 +1,62 @@
+{
+    "name": "@hamworks/scheduled-automatic-taxonomy",
+    "version": "2.0.0",
+    "private": true,
+    "author": "HIroshi Urabe <mail@torounit.com> (https://torounit.com)",
+    "license": "GPL-3.0+",
+    "scripts": {
+        "wp-env": "wp-env",
+        "test-unit-php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/scheduled-automatic-taxonomy/phpunit.xml.dist --verbose'",
+        "packages-update": "wp-scripts packages-update",
+        "lint-php": "./vendor/bin/phpcs --standard=./.phpcs.xml.dist"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/team-hamworks/scheduled-automatic-taxonomy.git"
+    },
+    "devDependencies": {
+        "@wordpress/env": "^4.1.3",
+        "lint-staged": "^11.2.6",
+        "husky": "^7.0.4"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "packages/*/package.json": [
+            "wp-scripts lint-pkg-json"
+        ],
+        "{*.css,*.scss}": [
+            "npm run lint-style"
+        ],
+        "*.js": [
+            "npm run format-js",
+            "npm run lint-js"
+        ],
+        "*.php": [
+            "npm run lint-php"
+        ]
+    },
+    "release-it": {
+        "hooks": {
+            "before:bump": [
+                "composer install --optimize-autoloader --prefer-dist --no-dev",
+                "bash ./bin/create-release.sh scheduled-automatic-taxonomy ${version}",
+                "bash ./bin/create-zip.sh scheduled-automatic-taxonomy"
+            ],
+            "after:bump": "composer install --optimize-autoloader --prefer-dist",
+            "after:release": "bash ./bin/cleanup.sh scheduled-automatic-taxonomy"
+        },
+        "github": {
+            "release": true,
+            "assets": [
+                "scheduled-automatic-taxonomy.zip"
+            ]
+        },
+        "npm": {
+            "publish": false
+        }
+    }
+}
