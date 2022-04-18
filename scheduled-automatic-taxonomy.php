@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:     scheduled-automatic-taxonomy
- * Plugin URI:      https://github.com/team-hamworks/scheduled-automatic-taxonomy
+ * Plugin URI:      https://github.com/hamworks/scheduled-automatic-taxonomy
  * Description:     CSV Exporter
  * Author:          HAMWORKS
  * Author URI:      https://ham.works
@@ -9,7 +9,7 @@
  * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     scheduled-automatic-taxonomy
  * Domain Path:     /languages
- * Version: 2.0.0
+ * Version:         0.0.1
  */
 
 use HAMWORKS\WP\Scheduled_Automatic_Taxonomy\Scheduled_Automatic_Taxonomy;

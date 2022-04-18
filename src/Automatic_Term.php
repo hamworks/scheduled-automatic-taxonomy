@@ -49,8 +49,8 @@ class Automatic_Term {
 		}
 
 		$this->create_term();
-		add_action( 'save_post', [ $this, 'update_schedule' ], 100 );
-		add_action( "${meta_key}_event", [ $this, 'update_term' ], 10, 1 );
+		add_action( 'save_post', array( $this, 'update_schedule' ), 100 );
+		add_action( "${meta_key}_event", array( $this, 'update_term' ), 10, 1 );
 	}
 
 	/**
@@ -60,7 +60,7 @@ class Automatic_Term {
 		if ( term_exists( $this->slug, $this->taxonomy ) ) {
 			return;
 		}
-		$args         = [];
+		$args         = array();
 		$args['slug'] = $this->slug;
 		wp_insert_term( $this->term, $this->taxonomy, $args );
 	}
@@ -80,10 +80,10 @@ class Automatic_Term {
 				wp_die( esc_html( $e->getMessage() ) );
 			}
 			$time = $date_time->getTimestamp();
-			if ( current_time( 'timestamp', true ) > $time ) {
+			if ( time() > $time ) {
 				$this->update_term( $post_id );
 			} else {
-				wp_schedule_single_event( $time, "${meta_key}_event", [ $post_id ] );
+				wp_schedule_single_event( $time, "${meta_key}_event", array( $post_id ) );
 			}
 		}
 	}
@@ -98,7 +98,7 @@ class Automatic_Term {
 			'shutdown',
 			function () use ( $post_id ) {
 				$term = get_term_by( 'slug', $this->slug, $this->taxonomy );
-				wp_set_post_terms( $post_id, [ $term->term_id ], $this->taxonomy, false );
+				wp_set_post_terms( $post_id, array( $term->term_id ), $this->taxonomy, false );
 			}
 		);
 	}

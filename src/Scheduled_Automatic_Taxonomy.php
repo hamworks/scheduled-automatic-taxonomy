@@ -22,14 +22,14 @@ class Scheduled_Automatic_Taxonomy {
 	private function create_taxonomy() {
 		$taxonomy_slug       = add_filter( 'scheduled_automatic_taxonomy_taxonomy_slug', 'schedule_tag' );
 		$taxonomy_name       = add_filter( 'scheduled_automatic_taxonomy_taxonomy_name', esc_html__( 'スケジュールタグ', 'scheduled-automatic-taxonomy' ) );
-		$taxonomy_post_types = add_filter( 'scheduled_automatic_taxonomy_taxonomy_post_types', [ 'post' ] );
+		$taxonomy_post_types = add_filter( 'scheduled_automatic_taxonomy_taxonomy_post_types', array( 'post' ) );
 		$builder             = new Builder( $taxonomy_slug, $taxonomy_name, $taxonomy_post_types );
 		$builder->set_options(
-			[
+			array(
 				'public'      => true,
 				'description' => 'taxonomy for schedule',
 				'has_archive' => true,
-			]
+			)
 		);
 		$builder->create();
 	}
@@ -45,7 +45,7 @@ class Scheduled_Automatic_Taxonomy {
 				'meta_key' => 'close',
 				'term'     => esc_html__( 'Closed', 'scheduled-automatic-taxonomy' ),
 				'slug'     => 'closed',
-			)
+			),
 		);
 
 		$terms = add_filter( 'scheduled_automatic_taxonomy_automatic_terms', $terms );
@@ -53,8 +53,6 @@ class Scheduled_Automatic_Taxonomy {
 		foreach ( $terms as $term ) {
 			new Automatic_Term( $term['meta_key'], $term['term'], $term['slug'] );
 		}
-
-
 	}
 
 
